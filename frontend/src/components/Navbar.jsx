@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import {motion} from 'motion/react'
 
 const Navbar = () => {
-  const { setShowLogin, logout, isOwner, axios, setIsOwner, token } = useAppContext();
+  const { setShowLogin, logout, isOwner, axios, setIsOwner, token, user } = useAppContext();
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -76,7 +76,7 @@ const Navbar = () => {
 
           {/* Desktop Right Section */}
           <div className="hidden lg:flex items-center gap-6">
-            <div className="flex items-center border border-gray-300 rounded-full px-4 py-2">
+            <div className="search-bar flex items-center border border-gray-300 rounded-full px-4 py-2">
               <input type="text" placeholder="Search..." className="outline-none w-48" />
               <img src={assets.search_icon} alt="search" className="w-5 h-5 ml-2" />
             </div>
@@ -100,6 +100,18 @@ const Navbar = () => {
               {isOwner ? "Dashboard" : "Listcars"}
             </button>
 
+            {/* User display */}
+            {token && user && (
+              <div className="flex items-center gap-2 border-l border-gray-200 pl-4 py-1">
+                <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 font-bold flex items-center justify-center text-sm uppercase shadow-sm">
+                  {user.name ? user.name.charAt(0) : "U"}
+                </div>
+                <span className="text-gray-700 font-semibold text-sm max-w-[120px] truncate">
+                  {user.name}
+                </span>
+              </div>
+            )}
+
             {/* Login/Logout Button */}
             <button
               onClick={() => (token ? logout() : setShowLogin(true))}
@@ -120,6 +132,18 @@ const Navbar = () => {
         }`}
       >
         <div className="px-8 py-10 flex flex-col gap-8">
+          {token && user && (
+            <div className="flex items-center gap-3 border-b border-gray-100 pb-4">
+              <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-600 font-bold flex items-center justify-center text-base uppercase">
+                {user.name ? user.name.charAt(0) : "U"}
+              </div>
+              <div>
+                <p className="text-gray-400 text-xs font-medium">Logged in as</p>
+                <p className="text-gray-800 font-bold text-lg leading-tight">{user.name}</p>
+              </div>
+            </div>
+          )}
+
           {menuLinks.map((item) => (
             <NavLink
               key={item.path}
@@ -133,7 +157,7 @@ const Navbar = () => {
             </NavLink>
           ))}
 
-          <div className="flex items-center border-2 border-gray-300 rounded-full px-5 py-3">
+          <div className="search-bar flex items-center border-2 border-gray-300 rounded-full px-5 py-3">
             <input type="text" placeholder="Search cars..." className="flex-1 outline-none text-lg" />
             <img src={assets.search_icon} alt="search" className="w-6 h-6" />
           </div>

@@ -22,7 +22,7 @@ const FeaturedSection = () => {
       </motion.div >
 
       <motion.div
-        initial={{ opacity: 0, y: 100 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1, duration: 1 }} className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-18'>
+        initial={{ opacity: 0, y: 100 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-18'>
         {cars.length > 0 ? (
           cars.slice(0, 6).map((car) =>
             <motion.div key={car._id}

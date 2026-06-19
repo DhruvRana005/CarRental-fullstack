@@ -11,7 +11,7 @@ const Layout = () => {
     if(!isOwner){
       navigate('/')
     }
-  })
+  }, [isOwner, navigate])
   return (
     <div className='flex flex-col'>
       <NavbarOwner/>

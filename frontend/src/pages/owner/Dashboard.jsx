@@ -1,39 +1,46 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../../context/AppContext';
 import Title from '../../components/owner/Title';
 import assets from '../../assets/assets';
 
 const Dashboard = () => {
-  const { dashboardData, fetchDashboardData, isOwner, currency } = useAppContext();
+  const { userBookings, fetchUserBookings, currency } = useAppContext();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (isOwner) {
-      fetchDashboardData();
-    }
-  }, [isOwner]);
+    const loadBookings = async () => {
+      setLoading(true);
+      await fetchUserBookings();
+      setLoading(false);
+    };
+    loadBookings();
+  }, []);
 
-  if (!isOwner) {
-    return <div className="p-10 text-center text-red-600">Access denied. Owner only.</div>;
+  if (loading) {
+    return <div className="p-10 text-center text-gray-500">Loading dashboard data...</div>;
   }
 
-  if (!dashboardData) {
-    return <div className="p-10 text-center">Loading dashboard data...</div>;
-  }
+  // Calculate statistics from the user's bookings
+  const totalBookings = userBookings.length;
+  const pendingBookings = userBookings.filter(b => b.status === 'pending').length;
+  const confirmedBookings = userBookings.filter(b => b.status === 'confirmed').length;
+  const cancelledBookings = userBookings.filter(b => b.status === 'cancelled').length;
 
   const dashboardCards = [
-    { title: "Total Cars", value: dashboardData.totalCars, icon: assets.carIconColored },
-    { title: "Total Bookings", value: dashboardData.totalBookings, icon: assets.listIconColored },
-    { title: "Pending", value: dashboardData.pendingBookings, icon: assets.cautionIconColored },
-    { title: "Confirmed", value: dashboardData.completedBookings, icon: assets.listIconColored },
+    { title: "Total Booked Cars", value: totalBookings, icon: assets.carIconColored },
+    { title: "Pending Bookings", value: pendingBookings, icon: assets.cautionIconColored },
+    { title: "Confirmed Bookings", value: confirmedBookings, icon: assets.listIconColored },
+    { title: "Cancelled Bookings", value: cancelledBookings, icon: assets.listIconColored },
   ];
 
   return (
     <div className='px-4 pt-10 md:px-10 flex-1'>
       <Title
-        title="Admin Dashboard"
-        subTitle="Monitor overall platform performance including total cars, bookings, revenue and recent activities"
+        title="Dashboard"
+        subTitle="Track your booked cars, rental periods, status and total spending details"
       />
 
+      {/* Overview Cards */}
       <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 my-8 max-w-3xl'>
         {dashboardCards.map((card, index) => (
           <div key={index} className='flex gap-2 items-center justify-between p-4 rounded-md border border-borderColor'>
@@ -49,49 +56,46 @@ const Dashboard = () => {
       </div>
 
       <div className='flex flex-wrap items-start gap-6 mb-8 w-full'>
-        {/* Recent Bookings */}
-        <div className='p-4 md:p-6 border border-borderColor rounded-md max-w-lg w-full'>
-          <h1 className='text-lg font-medium'>Recent Bookings</h1>
-          <p className='text-gray-500'>Latest customer bookings</p>
+        {/* Booked Cars List */}
+        <div className='p-4 md:p-6 border border-borderColor rounded-md max-w-2xl w-full'>
+          <h1 className='text-lg font-medium'>My Booked Cars</h1>
+          <p className='text-gray-500 mb-4'>Detailed list of cars booked by you</p>
 
-          {dashboardData.recentBookings.length === 0 ? (
-            <p className="text-center text-gray-500 mt-6">No recent bookings yet.</p>
+          {userBookings.length === 0 ? (
+            <p className="text-center text-gray-500 py-6">You haven't booked any cars yet.</p>
           ) : (
-            dashboardData.recentBookings.map((booking, index) => (
-              <div key={index} className='mt-4 flex items-center justify-between'>
-                <div className='flex items-center gap-2'>
-                  <div className='hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-primary/10'>
-                    <img src={assets.listIconColored} alt="Booking" className='h-5 w-5'/>
+            <div className="space-y-4">
+              {userBookings.map((booking, index) => (
+                <div key={booking._id || index} className='flex flex-col sm:flex-row sm:items-center justify-between p-4 border border-borderColor rounded-md gap-4'>
+                  <div className='flex items-center gap-3'>
+                    <img 
+                      src={booking.car?.image || "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=100&auto=format&fit=crop&q=80"} 
+                      alt="" 
+                      className='w-16 h-12 rounded object-cover'
+                    />
+                    <div>
+                      <p className='font-semibold'>{booking.car?.brand} {booking.car?.model}</p>
+                      <p className='text-xs text-gray-500'>
+                        Period: {new Date(booking.pickupDate).toLocaleDateString()} to {new Date(booking.returnDate).toLocaleDateString()}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p>{booking.car?.brand} {booking.car?.model}</p>
-                    <p className='text-sm text-gray-500'>
-                      {new Date(booking.createdAt).toLocaleDateString()}
-                    </p>
+                  <div className='flex items-center justify-between sm:justify-end gap-4'>
+                    <div className='text-right'>
+                      <p className='text-sm font-semibold text-primary'>{currency}{booking.price?.toLocaleString()}</p>
+                      <p className='text-[10px] text-gray-400'>Booked on {new Date(booking.createdAt).toLocaleDateString()}</p>
+                    </div>
+                    <span className={`px-3 py-1 text-xs rounded-full ${
+                      booking.status === 'confirmed' ? 'bg-green-100 text-green-600' :
+                      booking.status === 'cancelled' ? 'bg-red-100 text-red-600' : 'bg-yellow-100 text-yellow-600'
+                    }`}>
+                      {booking.status}
+                    </span>
                   </div>
                 </div>
-                <div className='flex items-center gap-2 font-medium'>
-                  <p className='text-sm text-gray-500'>
-                    {currency}{booking.price}
-                  </p>
-                  <p className={`px-3 py-0.5 border border-borderColor rounded-full text-sm ${
-                    booking.status === 'confirmed' ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600'
-                  }`}>
-                    {booking.status}
-                  </p>
-                </div>
-              </div>
-            ))
+              ))}
+            </div>
           )}
-        </div>
-
-        {/* Monthly Revenue */}
-        <div className='p-4 md:p-6 mb-6 border border-borderColor rounded-md w-full md:max-w-xs'>
-          <h1 className='text-lg font-medium'>Monthly Revenue</h1>
-          <p className='text-gray-500'>Revenue for current month</p>
-          <p className='text-3xl mt-6 font-semibold text-primary'>
-            {currency}{dashboardData.monthlyRevenue.toLocaleString()}
-          </p>
         </div>
       </div>
     </div>

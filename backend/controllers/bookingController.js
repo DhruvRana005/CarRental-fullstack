@@ -35,7 +35,11 @@ export const checkAvailabilityOfCar = async (req, res) => {
 export const createBooking = async (req, res) => {
   try {
     const { _id } = req.user;
-    const { car, pickupDate, returnDate } = req.body;
+    const { car, pickupDate, returnDate, userEmail, phone, address } = req.body;
+
+    if (!userEmail || !phone || !address) {
+      return res.status(400).json({ success: false, message: "Email, Phone Number and Address are required to place a booking" });
+    }
 
     const isAvailable = await checkAvailability(car, pickupDate, returnDate);
     if (!isAvailable) {
@@ -49,8 +53,8 @@ export const createBooking = async (req, res) => {
 
     const picked = new Date(pickupDate);
     const returned = new Date(returnDate);
-    const noOfDays = Math.ceil((returned - picked) / (1000 * 60 * 60 * 24));
-    const price = carData.pricePerDay * noOfDays;
+    const noOfDays = Math.ceil((returned - picked) / (1000 * 60 * 60 * 24)) + 1;
+    const price = carData.pricePerDay * (noOfDays > 0 ? noOfDays : 1);
 
     const booking = await Booking.create({
       car,
@@ -58,7 +62,10 @@ export const createBooking = async (req, res) => {
       user: _id,
       pickupDate,
       returnDate,
-      price
+      price,
+      userEmail,
+      phone,
+      address
     });
 
     res.status(201).json({ success: true, message: "Booking Created", booking });

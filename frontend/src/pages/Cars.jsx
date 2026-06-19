@@ -35,7 +35,7 @@ const Cars = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex items-center border border-gray-300 rounded-full px-5 py-3 mt-8 max-w-2xl w-full shadow-lg bg-white">
+          className="search-bar flex items-center border border-gray-300 rounded-full px-5 py-3 mt-8 max-w-2xl w-full shadow-lg bg-white">
           <img src={assets.search_icon} alt="search" className="w-6 h-6 mr-3 text-gray-500" />
           <input
             type="text"

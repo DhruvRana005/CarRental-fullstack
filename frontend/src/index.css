@@ -1,12 +1,267 @@
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Liter&family=Martel+Sans:wght@200;300;400;600;700;800;900&family=Outfit:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
-*{
+* {
   font-family: "Outfit", sans-serif;
 }
-@theme{
-  --color-primary: #2563eb;
-  --color-primary-dull: #1f58d8;
-  --color-light: #f1f5f9;
-  --color-borderColor: #c4c7d2;
+
+@theme {
+  --color-primary: #10b981;
+  --color-primary-dull: #047857;
+  --color-light: #050a06;
+  --color-borderColor: #16301d;
+}
+
+/* Base Theme Styling */
+body {
+  background: radial-gradient(circle at top, #061f10 0%, #000000 100%) no-repeat fixed;
+  background-color: #000000;
+  color: #f3f4f6;
+  min-height: 100vh;
+}
+
+/* Selection */
+::selection {
+  background-color: #10b981;
+  color: #000000;
+}
+
+/* Header & Navigation */
+header.bg-white {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid rgba(16, 185, 129, 0.2) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+header * {
+  color: #e5e7eb !important;
+}
+
+header span.text-gray-800 {
+  color: #10b981 !important;
+  background: linear-gradient(to right, #10b981, #34d399);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+
+header nav a {
+  color: #9ca3af !important;
+  transition: all 0.3s ease;
+}
+
+header nav a.active, header nav a:hover {
+  color: #10b981 !important;
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+}
+
+/* Mobile Menu */
+div.fixed.inset-0.bg-white {
+  background-color: #030704 !important;
+  border-right: 1px solid rgba(16, 185, 129, 0.2) !important;
+}
+
+div.fixed.inset-0.bg-white a {
+  color: #d1d5db !important;
+}
+
+div.fixed.inset-0.bg-white a.active {
+  color: #10b981 !important;
+}
+
+/* General BG-White Override */
+.bg-white {
+  background-color: #040905 !important;
+  border-color: #16301d !important;
+}
+
+/* Form Container / Hero Search Bar */
+form.bg-white {
+  background-color: rgba(4, 9, 5, 0.85) !important;
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(16, 185, 129, 0.15) !important;
+  color: #f3f4f6 !important;
+}
+
+form.bg-white * {
+  color: #f3f4f6 !important;
+}
+
+form.bg-white select option {
+  background-color: #040905 !important;
+  color: #f3f4f6 !important;
+}
+
+form.bg-white input[type="date"] {
+  color-scheme: dark;
+}
+
+/* Hero search bar: remove inner borders & bg from inputs/selects */
+.hero-search-bar input,
+.hero-search-bar select {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.hero-search-bar input:focus,
+.hero-search-bar select:focus {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Car Cards & Testimonials */
+.group.rounded-xl, .bg-white.p-6.rounded-xl {
+  background-color: #050a06 !important;
+  border: 1px solid rgba(16, 185, 129, 0.15) !important;
+  transition: all 0.4s ease;
+}
+
+.group.rounded-xl:hover {
+  border-color: rgba(16, 185, 129, 0.5) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(16, 185, 129, 0.25) !important;
+  transform: translateY(-4px);
+}
+
+/* Global Text Colors */
+.text-gray-800, .text-gray-700, .text-gray-600 {
+  color: #f3f4f6 !important;
+}
+
+.text-gray-500, .text-gray-400 {
+  color: #9ca3af !important;
+}
+
+.text-muted-foreground {
+  color: #9ca3af !important;
+}
+
+/* Banner section overrides */
+.bg-gradient-to-r {
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+}
+
+/* Buttons */
+button.bg-primary, Link.bg-primary, a.bg-primary {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3) !important;
+}
+
+button.bg-primary:hover, Link.bg-primary:hover, a.bg-primary:hover {
+  background: linear-gradient(135deg, #34d399 0%, #10b981 100%) !important;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5) !important;
+}
+
+/* Input boxes & fields */
+input, select, textarea {
+  background-color: #070d08 !important;
+  border: 1px solid #16301d !important;
+  color: #ffffff !important;
+  border-radius: 8px;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25) !important;
+}
+
+/* Search bar inputs: remove inner borders */
+.search-bar input {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.search-bar input:focus {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Dialog & Logins */
+.bg-white.rounded-lg.shadow-xl {
+  background-color: #030704 !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+}
+
+/* Borders and lines */
+.border-gray-200, .border-gray-300, .border {
+  border-color: rgba(16, 185, 129, 0.15) !important;
+}
+
+/* Testimonial area background */
+.bg-slate-50, .bg-gray-50, .bg-gray-100 {
+  background-color: #030704 !important;
+}
+
+/* Sidebar & Dashboards */
+.bg-gray-50.border-r {
+  background-color: #030704 !important;
+  border-right-color: rgba(16, 185, 129, 0.15) !important;
+}
+
+/* Sub-title and header components */
+.text-primary {
+  color: #10b981 !important;
+}
+
+/* Blue utilities override to match green theme */
+.bg-blue-600, .bg-blue-700 {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: #ffffff !important;
+}
+.hover\:bg-blue-700:hover {
+  background: linear-gradient(135deg, #34d399 0%, #10b981 100%) !important;
+}
+.text-blue-600, .text-blue-700, .hover\:text-blue-600:hover {
+  color: #10b981 !important;
+}
+.bg-blue-100 {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+}
+.outline-blue-500:focus, .focus\:border-blue-500:focus {
+  border-color: #10b981 !important;
+  outline-color: #10b981 !important;
+}
+
+/* Hide scrollbars globally */
+::-webkit-scrollbar {
+  display: none !important;
+}
+
+html, body {
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE and Edge */
+}
+
+/* Admin login and admin panel inputs: remove inner borders & default bg */
+.admin-login-form input {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.admin-login-form input:focus {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.admin-panel-container input,
+.admin-panel-container select,
+.admin-panel-container textarea {
+  background-color: rgba(0, 0, 0, 0.45) !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+  border-radius: 12px !important;
+}
+
+.admin-panel-container input:focus,
+.admin-panel-container select:focus,
+.admin-panel-container textarea:focus {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25) !important;
 }

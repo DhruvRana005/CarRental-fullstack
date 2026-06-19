@@ -1,0 +1,12 @@
+{
+  "name": "carrental-project",
+  "version": "1.0.0",
+  "description": "Car Rental fullstack project",
+  "scripts": {
+    "install-all": "npm install --prefix backend && npm install --prefix frontend",
+    "dev": "concurrently \"npm run server --prefix backend\" \"npm run dev --prefix frontend\""
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

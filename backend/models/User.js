@@ -7,6 +7,8 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true, minlength: 6 },
   role: { type: String, enum: ["owner", "customer"], default: "customer" },
   image: { type: String, default: "" },
+  otp: { type: String, default: null },
+  otpExpire: { type: Date, default: null },
 }, { timestamps: true });
 
 // Modern async pre-save (no next needed)

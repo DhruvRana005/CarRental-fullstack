@@ -11,11 +11,13 @@ export const AppProvider = ({ children }) => {
   const navigate = useNavigate();
   const currency = import.meta.env.VITE_CURRENCY || "₹";
 
+  const fallbackCars = [];
+
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [user, setUser] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
-  const [cars, setCars] = useState([]);
+  const [cars, setCars] = useState(fallbackCars);
   const [ownerCars, setOwnerCars] = useState([]);
   const [ownerBookings, setOwnerBookings] = useState([]);
   const [userBookings, setUserBookings] = useState([]);
@@ -39,7 +41,6 @@ export const AppProvider = ({ children }) => {
       if (data.success) {
         setUser(data.user);
         setIsOwner(data.user.role === "owner");
-        if (data.user.role === "owner") toast.success("Welcome Owner!");
       }
     } catch (error) {
       console.error("Fetch User Error:", error.response?.data || error.message);
@@ -53,9 +54,14 @@ export const AppProvider = ({ children }) => {
   const fetchCars = async () => {
     try {
       const { data } = await axios.get("/api/user/cars");
-      if (data.success) setCars(data.cars || []);
+      if (data.success && data.cars && data.cars.length > 0) {
+        setCars(data.cars);
+      } else {
+        setCars(fallbackCars);
+      }
     } catch (error) {
       console.error("Fetch Cars Error:", error);
+      setCars(fallbackCars);
     }
   };
 
@@ -106,7 +112,7 @@ export const AppProvider = ({ children }) => {
     setUser(null);
     setIsOwner(false);
     delete axios.defaults.headers.common["Authorization"];
-    setCars([]);
+    setCars(fallbackCars);
     setOwnerCars([]);
     setOwnerBookings([]);
     setUserBookings([]);
@@ -123,9 +129,12 @@ export const AppProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    fetchCars();
+  }, []);
+
+  useEffect(() => {
     if (token) {
       fetchUser();
-      fetchCars();
       fetchUserBookings();
       if (isOwner) {
         fetchOwnerCars();

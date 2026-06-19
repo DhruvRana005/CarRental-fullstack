@@ -6,22 +6,22 @@ import { motion } from 'motion/react';
 const Testimonial = () => {
   const testimonials = [
     {
-      name: "Sneha",
-      location: "Indore, India",
+      name: "Aarav Mehta",
+      location: "Mumbai, India",
       image: assets.testimonial_image_1,
-      testimonial: "I've rented cars from various companies, but the experience with 4wheeler was exceptional."
+      testimonial: "Absolutely seamless booking process! The Mercedes S-Class was in showroom condition. Will definitely rent again."
     },
     {
-      name: "Jassi",
-      location: "Punjab, India",
+      name: "Karan Johar",
+      location: "Delhi, India",
       image: assets.testimonial_image_2,
-      testimonial: "4Wheeler made my trip so much easier. The car was delivered right to my door, and the customer service was fantastic."
+      testimonial: "Incredible service. The team delivered the Range Rover directly to my hotel. Super convenient and professional!"
     },
     {
-      name: "Simmi",
-      location: "Haryana, India",
+      name: "Anjali Rao",
+      location: "Bangalore, India",
       image: assets.testimonial_image_1,
-      testimonial: "I've rented cars from various companies, but the experience with 4wheeler was exceptional."
+      testimonial: "Best luxury car rental experience in India. The Porsche 911 was clean, well-maintained, and a dream to drive."
     },
   ];
 
